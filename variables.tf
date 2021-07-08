@@ -23,6 +23,11 @@ variable "prefix" {
   default     = "default"
 }
 
+variable "app_service_plan_id" {
+  description = "(Required) The ID of the App Service Plan within which to create this App Service."
+  type        = string
+  default     = null
+}
 variable "tags" {
   description = "Tags to apply to all resources created."
   type        = map(string)

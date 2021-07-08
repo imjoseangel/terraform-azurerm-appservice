@@ -27,3 +27,17 @@ resource "azurerm_resource_group" "rg" {
 #---------------------------------------------------------
 # App Service Creation or selection
 #---------------------------------------------------------
+
+resource "azurerm_app_service" "main" {
+  name                = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
+  location            = local.location
+  resource_group_name = local.resource_group_name
+  app_service_plan_id = var.app_service_plan_id
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = merge({ "ResourceName" = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", ""))) }, var.tags, )
+
+}
