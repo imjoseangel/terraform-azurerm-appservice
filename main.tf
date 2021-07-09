@@ -111,8 +111,8 @@ resource "azurerm_app_service" "main" {
     allowed_external_redirect_urls = []
 
     active_directory {
-      client_id = azuread_application.main.application_id
-      allowed_audiences = format("api://%s", azuread_application.main.application_id, "")))
+      client_id         = azuread_application.main.application_id
+      allowed_audiences = format("api://%s", azuread_application.main.application_id, "")
     }
   }
 
