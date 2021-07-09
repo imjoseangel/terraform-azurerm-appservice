@@ -35,6 +35,12 @@ variable "site_config" {
   default     = {}
 }
 
+variable "auth_settings_enabled" {
+  type        = bool
+  default     = false
+  description = "(Required) Is Authentication enabled?"
+}
+
 variable "tags" {
   description = "Tags to apply to all resources created."
   type        = map(string)
