@@ -42,7 +42,7 @@ resource "azurerm_resource_group" "rg" {
 
 resource "azuread_application" "main" {
   display_name     = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
-  identifier_uris  = [format("api://%s", azuread_application.main.application_id)]
+  identifier_uris  = [format("api://%s", lower(replace(var.name, "/[[:^alnum:]]/", "")))]
   sign_in_audience = "AzureADMyOrg"
 
   required_resource_access {
@@ -112,6 +112,7 @@ resource "azurerm_app_service" "main" {
 
     active_directory {
       client_id = azuread_application.main.application_id
+      allowed_audiences = format("api://%s", azuread_application.main.application_id, "")))
     }
   }
 
