@@ -62,15 +62,6 @@ resource "azuread_application" "main" {
   }
 }
 
-resource "azuread_application_app_role" "example" {
-  application_object_id = azuread_application.main.id
-  allowed_member_types  = ["User"]
-  description           = "Admins can manage roles and perform all task actions"
-  display_name          = "Admin"
-  enabled               = true
-  value                 = "administer"
-}
-
 #---------------------------------------------------------
 # App Service Creation or selection
 #---------------------------------------------------------
