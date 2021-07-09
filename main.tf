@@ -60,6 +60,14 @@ resource "azuread_application" "main" {
       access_token_issuance_enabled = false
     }
   }
+
+  app_role {
+    allowed_member_types = ["User", "Application"]
+    description          = "Admins can manage roles and perform all task actions"
+    display_name         = "Admin"
+    is_enabled           = true
+    value                = "admin"
+  }
 }
 
 #---------------------------------------------------------
