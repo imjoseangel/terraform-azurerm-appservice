@@ -5,7 +5,6 @@ locals {
   resource_group_name = element(coalescelist(data.azurerm_resource_group.rgrp.*.name, azurerm_resource_group.rg.*.name, [""]), 0)
   location            = element(coalescelist(data.azurerm_resource_group.rgrp.*.location, azurerm_resource_group.rg.*.location, [""]), 0)
   default_site_config = {
-    always_on = "true"
     default_documents = [
       "Default.htm",
       "Default.html",
@@ -69,6 +68,24 @@ resource "azurerm_app_service" "main" {
       scm_type                  = lookup(site_config.value, "scm_type", null)
       use_32_bit_worker_process = lookup(site_config.value, "use_32_bit_worker_process", null)
       websockets_enabled        = lookup(site_config.value, "websockets_enabled", null)
+    }
+  }
+
+  auth_settings {
+    enabled                        = local.auth_settings.enabled
+    issuer                         = local.auth_settings.issuer
+    token_store_enabled            = local.auth_settings.token_store_enabled
+    unauthenticated_client_action  = local.auth_settings.unauthenticated_client_action
+    default_provider               = local.auth_settings.default_provider
+    allowed_external_redirect_urls = local.auth_settings.allowed_external_redirect_urls
+
+    dynamic "active_directory" {
+      for_each = local.auth_settings_active_directory.client_id == null ? [] : [local.auth_settings_active_directory]
+      content {
+        client_id         = local.auth_settings_active_directory.client_id
+        client_secret     = local.auth_settings_active_directory.client_secret
+        allowed_audiences = concat(formatlist("https://%s", [format("%s.azurewebsites.net", local.app_service_name)]), local.auth_settings_active_directory.allowed_audiences)
+      }
     }
   }
 
