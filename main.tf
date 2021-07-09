@@ -60,6 +60,10 @@ resource "azuread_application" "main" {
       access_token_issuance_enabled = false
     }
   }
+
+  app_role {
+      allowed_member_types = ["User"]
+  }
 }
 
 #---------------------------------------------------------
