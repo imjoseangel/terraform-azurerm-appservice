@@ -63,6 +63,7 @@ resource "azuread_application" "main" {
 
   app_role {
       allowed_member_types = ["User"]
+      description = "Enable User"
       display_name = "app"
   }
 }
