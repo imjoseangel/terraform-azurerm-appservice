@@ -41,10 +41,13 @@ resource "azurerm_resource_group" "rg" {
 #---------------------------------------------------------
 
 resource "azuread_application" "main" {
-  display_name               = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
-  identifier_uris            = [format("api://%s", lower(replace(var.name, "/[[:^alnum:]]/", "")))]
-  sign_in_audience           = "AzureADMyOrg"
-  oauth2_allow_implicit_flow = true
+  display_name     = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
+  identifier_uris  = [format("api://%s", lower(replace(var.name, "/[[:^alnum:]]/", "")))]
+  sign_in_audience = "AzureADMyOrg"
+
+  implicit_grant {
+    access_token_issuance_enabled = true
+  }
 }
 
 #---------------------------------------------------------
