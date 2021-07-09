@@ -28,6 +28,13 @@ variable "app_service_plan_id" {
   type        = string
   default     = null
 }
+
+variable "site_config" {
+  description = "Site config block for App Service."
+  type        = any
+  default     = {}
+}
+
 variable "tags" {
   description = "Tags to apply to all resources created."
   type        = map(string)
