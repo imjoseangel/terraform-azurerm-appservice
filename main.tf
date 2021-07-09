@@ -112,7 +112,7 @@ resource "azurerm_app_service" "main" {
 
     active_directory {
       client_id         = azuread_application.main.application_id
-      allowed_audiences = [format("api://%s", azuread_application.main.application_id, "")]
+      allowed_audiences = [format("api://%s", azuread_application.main.application_id)]
     }
   }
 
