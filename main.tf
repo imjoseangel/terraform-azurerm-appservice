@@ -37,6 +37,17 @@ resource "azurerm_resource_group" "rg" {
 }
 
 #---------------------------------------------------------
+# Application ClientID/Secret Creation or selection
+#---------------------------------------------------------
+
+resource "azuread_application" "main" {
+  display_name = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
+  identifier_uris = [format("api://%s"), lower(replace(var.name, "/[[:^alnum:]]/", ""))]
+  available_to_other_tenants = false
+  oauth2_allow_implicit_flow = true
+}
+
+#---------------------------------------------------------
 # App Service Creation or selection
 #---------------------------------------------------------
 
@@ -76,8 +87,12 @@ resource "azurerm_app_service" "main" {
     issuer                         = format("https://sts.windows.net/%s/", data.azurerm_client_config.current.tenant_id)
     token_store_enabled            = false
     unauthenticated_client_action  = "RedirectToLoginPage"
-    default_provider               = "Microsoft"
+    default_provider               = "AzureActiveDirectory"
     allowed_external_redirect_urls = []
+  }
+
+  active_directory {
+      client_id = azuread_application.main.application_id
   }
 
   identity {
