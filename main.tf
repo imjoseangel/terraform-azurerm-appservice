@@ -67,6 +67,7 @@ resource "azurerm_app_service" "main" {
       remote_debugging_enabled  = lookup(site_config.value, "remote_debugging_enabled", null)
       remote_debugging_version  = lookup(site_config.value, "remote_debugging_version", null)
       scm_type                  = lookup(site_config.value, "scm_type", null)
+      use_32_bit_worker_process = lookup(site_config.value, "use_32_bit_worker_process", null)
       websockets_enabled        = lookup(site_config.value, "websockets_enabled", null)
     }
   }
