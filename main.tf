@@ -55,7 +55,7 @@ resource "azuread_application" "main" {
   }
 
   web {
-    redirect_uris = [format("https://%s.azurewebsites.net/.auth/login/aad/callback", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))]
+    redirect_uris = [format("https://%s.azurewebsites.net/.auth/login/aad/callback", lower(replace(var.name, "/[[:^alnum:]]/", "")))]
   }
 }
 
