@@ -42,7 +42,7 @@ resource "azurerm_resource_group" "rg" {
 
 resource "azuread_application" "main" {
   display_name     = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
-  identifier_uris  = [format("api://%s", lower(replace(var.name, "/[[:^alnum:]]/", "")))]
+  identifier_uris  = [format("api://%s", azuread_application.main.application_id)]
   sign_in_audience = "AzureADMyOrg"
 
   required_resource_access {
@@ -104,7 +104,7 @@ resource "azurerm_app_service" "main" {
 
   auth_settings {
     enabled                        = var.auth_settings_enabled
-    issuer                         = format("https://sts.windows.net/%s/", data.azurerm_client_config.current.tenant_id)
+    issuer                         = format("https://sts.windows.net/%s/v2.0", data.azurerm_client_config.current.tenant_id)
     token_store_enabled            = false
     unauthenticated_client_action  = "RedirectToLoginPage"
     default_provider               = "AzureActiveDirectory"
