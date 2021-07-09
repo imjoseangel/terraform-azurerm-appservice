@@ -42,7 +42,7 @@ resource "azurerm_resource_group" "rg" {
 
 resource "azuread_application" "main" {
   display_name               = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
-  identifier_uris            = [format("api://%s"), lower(replace(var.name, "/[[:^alnum:]]/", ""))]
+  identifier_uris            = [format("api://%s", lower(replace(var.name, "/[[:^alnum:]]/", "")))]
   available_to_other_tenants = false
   oauth2_allow_implicit_flow = true
 }
