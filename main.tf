@@ -41,8 +41,8 @@ resource "azurerm_resource_group" "rg" {
 #---------------------------------------------------------
 
 resource "azuread_application" "main" {
-  display_name = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
-  identifier_uris = [format("api://%s"), lower(replace(var.name, "/[[:^alnum:]]/", ""))]
+  display_name               = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
+  identifier_uris            = [format("api://%s"), lower(replace(var.name, "/[[:^alnum:]]/", ""))]
   available_to_other_tenants = false
   oauth2_allow_implicit_flow = true
 }
@@ -89,10 +89,10 @@ resource "azurerm_app_service" "main" {
     unauthenticated_client_action  = "RedirectToLoginPage"
     default_provider               = "AzureActiveDirectory"
     allowed_external_redirect_urls = []
-  }
 
-  active_directory {
+    active_directory {
       client_id = azuread_application.main.application_id
+    }
   }
 
   identity {
