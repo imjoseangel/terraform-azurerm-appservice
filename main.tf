@@ -44,6 +44,15 @@ resource "azuread_application" "main" {
   display_name     = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
   identifier_uris  = [format("api://%s", lower(replace(var.name, "/[[:^alnum:]]/", "")))]
   sign_in_audience = "AzureADMyOrg"
+
+    required_resource_access {
+        resource_app_id = "00000003-0000-0000-c000-000000000000"
+
+        resource_access {
+        id   = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"
+        type = "Scope"
+        }
+    }
 }
 
 #---------------------------------------------------------
