@@ -76,7 +76,7 @@ resource "azurerm_app_service" "main" {
     issuer                         = format("https://sts.windows.net/%s/", data.azurerm_client_config.current.tenant_id)
     token_store_enabled            = false
     unauthenticated_client_action  = "RedirectToLoginPage"
-    default_provider               = "AzureActiveDirectory"
+    default_provider               = "Microsoft"
     allowed_external_redirect_urls = []
   }
 
