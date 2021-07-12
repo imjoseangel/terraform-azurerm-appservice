@@ -40,6 +40,22 @@ resource "azurerm_resource_group" "rg" {
 # Application ClientID/Secret Creation or selection
 #---------------------------------------------------------
 
+resource "time_rotating" "main" {
+  rotation_years = var.years
+
+  triggers = {
+    years = var.years
+  }
+}
+
+resource "random_password" "main" {
+  length = 32
+
+  keepers = {
+    rfc3339 = time_rotating.main.id
+  }
+}
+
 resource "azuread_application" "main" {
   display_name     = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
   identifier_uris  = [format("api://%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))]
@@ -66,6 +82,12 @@ resource "azuread_application" "main" {
 resource "azuread_service_principal" "main" {
   application_id               = azuread_application.main.application_id
   app_role_assignment_required = true
+}
+
+resource "azuread_service_principal_password" "main" {
+  service_principal_id = azuread_service_principal.main.id
+  value                = random_password.main[0].result
+  end_date             = time_rotating.main.rotation_rfc3339
 }
 
 #---------------------------------------------------------

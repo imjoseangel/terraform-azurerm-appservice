@@ -36,9 +36,15 @@ variable "site_config" {
 }
 
 variable "auth_settings_enabled" {
+  description = "(Required) Is Authentication enabled?"
   type        = bool
   default     = false
-  description = "(Required) Is Authentication enabled?"
+}
+
+variable "years" {
+  description = "The number of years after which the password expire. Either this or `end_date` should be specified, but not both."
+  type        = number
+  default     = 100
 }
 
 variable "tags" {
