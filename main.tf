@@ -125,22 +125,21 @@ resource "azurerm_app_service" "main" {
     }
   }
 
-  auth_settings {
-    enabled                        = var.auth_settings_enabled
-    issuer                         = format("https://sts.windows.net/%s/v2.0", data.azurerm_client_config.current.tenant_id)
-    token_store_enabled            = false
-    unauthenticated_client_action  = "RedirectToLoginPage"
-    default_provider               = "AzureActiveDirectory"
-    allowed_external_redirect_urls = []
+  dynamic "auth_settings" {
+    for_each = var.auth_settings_enabled ? ["auth_settings_enabled"] : []
+    content {
+      enabled                        = var.auth_settings_enabled
+      issuer                         = format("https://sts.windows.net/%s/v2.0", data.azurerm_client_config.current.tenant_id)
+      token_store_enabled            = false
+      unauthenticated_client_action  = "RedirectToLoginPage"
+      default_provider               = "AzureActiveDirectory"
+      allowed_external_redirect_urls = []
 
-    dynamic "active_directory" {
-      for_each = var.auth_settings_enabled ? [] : ["active_directory_enabled"]
-      content {
+      active_directory {
         client_id         = azuread_application.main[0].application_id
         allowed_audiences = [format("api://%s", azuread_application.main[0].application_id)]
       }
     }
-
   }
 
   identity {
