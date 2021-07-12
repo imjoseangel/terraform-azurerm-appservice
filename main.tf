@@ -78,7 +78,7 @@ resource "azuread_application" "main" {
 resource "azuread_service_principal" "main" {
   count                        = var.auth_settings_enabled ? 1 : 0
 
-  application_id               = azuread_application.main.application_id
+  application_id               = azuread_application.main[0].application_id
   app_role_assignment_required = true
 }
 
@@ -86,8 +86,8 @@ resource "azuread_application_password" "main" {
   count                 = var.auth_settings_enabled ? 1 : 0
 
   display_name          = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
-  application_object_id = azuread_application.main.object_id
-  end_date              = time_rotating.main.rotation_rfc3339
+  application_object_id = azuread_application.main[0].object_id
+  end_date              = time_rotating.main[0].rotation_rfc3339
 }
 
 #---------------------------------------------------------
@@ -134,8 +134,8 @@ resource "azurerm_app_service" "main" {
     allowed_external_redirect_urls = []
 
     active_directory {
-      client_id         = azuread_application.main.application_id
-      allowed_audiences = [format("api://%s", azuread_application.main.application_id)]
+      client_id         = azuread_application.main[0].application_id
+      allowed_audiences = [format("api://%s", azuread_application.main[0].application_id)]
     }
   }
 
