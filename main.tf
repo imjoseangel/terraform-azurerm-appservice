@@ -48,14 +48,6 @@ resource "time_rotating" "main" {
   }
 }
 
-resource "random_password" "main" {
-  length = 32
-
-  keepers = {
-    rfc3339 = time_rotating.main.id
-  }
-}
-
 resource "azuread_application" "main" {
   display_name     = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
   identifier_uris  = [format("api://%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))]
@@ -86,8 +78,7 @@ resource "azuread_service_principal" "main" {
 
 resource "azuread_service_principal_password" "main" {
   service_principal_id = azuread_service_principal.main.id
-  value                = random_password.main.result
-  end_date             = time_rotating.main.rotation_rfc3339
+  end_date             = time_rotating.main.rotation_years
 }
 
 #---------------------------------------------------------
