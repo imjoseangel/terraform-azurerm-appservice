@@ -77,6 +77,7 @@ resource "azuread_service_principal" "main" {
 }
 
 resource "azuread_application_password" "main" {
+  display_name          = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
   application_object_id = azuread_application.main.object_id
   end_date              = time_rotating.main.rotation_rfc3339
 }
