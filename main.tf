@@ -76,9 +76,9 @@ resource "azuread_service_principal" "main" {
   app_role_assignment_required = true
 }
 
-resource "azuread_service_principal_password" "main" {
-  service_principal_id = azuread_service_principal.main.object_id
-  end_date             = time_rotating.main.rotation_rfc3339
+resource "azuread_application_password" "main" {
+  application_object_id = azuread_application.main.object_id
+  end_date              = time_rotating.main.rotation_rfc3339
 }
 
 #---------------------------------------------------------
