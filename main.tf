@@ -86,7 +86,7 @@ resource "azuread_service_principal" "main" {
 
 resource "azuread_service_principal_password" "main" {
   service_principal_id = azuread_service_principal.main.id
-  value                = random_password.main[0].result
+  value                = random_password.main.result
   end_date             = time_rotating.main.rotation_rfc3339
 }
 
