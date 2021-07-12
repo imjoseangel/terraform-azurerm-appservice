@@ -41,7 +41,7 @@ resource "azurerm_resource_group" "rg" {
 #---------------------------------------------------------
 
 resource "time_rotating" "main" {
-  count            = var.auth_settings_enabled ? 1 : 0
+  count = var.auth_settings_enabled ? 1 : 0
 
   rotation_years = var.years
 
@@ -51,7 +51,7 @@ resource "time_rotating" "main" {
 }
 
 resource "azuread_application" "main" {
-  count            = var.auth_settings_enabled ? 1 : 0
+  count = var.auth_settings_enabled ? 1 : 0
 
   display_name     = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
   identifier_uris  = [format("api://%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))]
@@ -76,14 +76,14 @@ resource "azuread_application" "main" {
 }
 
 resource "azuread_service_principal" "main" {
-  count                        = var.auth_settings_enabled ? 1 : 0
+  count = var.auth_settings_enabled ? 1 : 0
 
   application_id               = azuread_application.main[0].application_id
   app_role_assignment_required = true
 }
 
 resource "azuread_application_password" "main" {
-  count                 = var.auth_settings_enabled ? 1 : 0
+  count = var.auth_settings_enabled ? 1 : 0
 
   display_name          = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
   application_object_id = azuread_application.main[0].object_id
@@ -133,10 +133,14 @@ resource "azurerm_app_service" "main" {
     default_provider               = "AzureActiveDirectory"
     allowed_external_redirect_urls = []
 
-    active_directory {
-      client_id         = azuread_application.main[0].application_id
-      allowed_audiences = [format("api://%s", azuread_application.main[0].application_id)]
+    dynamic "active_directory" {
+      for_each = var.auth_settings_enabled ? [] : ["active_directory_enabled"]
+      content {
+        client_id         = azuread_application.main[0].application_id
+        allowed_audiences = [format("api://%s", azuread_application.main[0].application_id)]
+      }
     }
+
   }
 
   identity {
