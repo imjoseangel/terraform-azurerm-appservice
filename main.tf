@@ -41,6 +41,8 @@ resource "azurerm_resource_group" "rg" {
 #---------------------------------------------------------
 
 resource "time_rotating" "main" {
+  count            = var.auth_settings_enabled ? 1 : 0
+
   rotation_years = var.years
 
   triggers = {
@@ -49,6 +51,8 @@ resource "time_rotating" "main" {
 }
 
 resource "azuread_application" "main" {
+  count            = var.auth_settings_enabled ? 1 : 0
+
   display_name     = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
   identifier_uris  = [format("api://%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))]
   sign_in_audience = "AzureADMyOrg"
@@ -72,11 +76,15 @@ resource "azuread_application" "main" {
 }
 
 resource "azuread_service_principal" "main" {
+  count                        = var.auth_settings_enabled ? 1 : 0
+
   application_id               = azuread_application.main.application_id
   app_role_assignment_required = true
 }
 
 resource "azuread_application_password" "main" {
+  count                 = var.auth_settings_enabled ? 1 : 0
+
   display_name          = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
   application_object_id = azuread_application.main.object_id
   end_date              = time_rotating.main.rotation_rfc3339
