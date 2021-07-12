@@ -77,7 +77,7 @@ resource "azuread_service_principal" "main" {
 }
 
 resource "azuread_service_principal_password" "main" {
-  service_principal_id = azuread_service_principal.main.id
+  service_principal_id = azuread_service_principal.main.object_id
   end_date             = time_rotating.main.rotation_rfc3339
 }
 
