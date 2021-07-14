@@ -13,12 +13,26 @@ This Terraform module deploys an Application Service on Azure
 ## Usage in Terraform 1.0
 
 ```terraform
-module "aks" {
-  source                    = "github.com/visma-raet/terraform-azurerm-appservice"
-  name                      = "appsvcname"
-  resource_group_name       = "rsg-appsvc"
-  location                  = "westeurope"
-  create_resource_group     = true
+module "appserviceplan" {
+  source                = "github.com/visma-raet/terraform-azurerm-appserviceplan"
+  name                  = var.appsp_name
+  resource_group_name   = var.appsp_rsg
+  location              = var.location
+  create_resource_group = true
+}
+
+module "appservice" {
+  source                = "github.com/visma-raet/terraform-azurerm-appservice"
+  name                  = var.appsvc_name
+  resource_group_name   = var.appsvc_rsg
+  location              = var.location
+  app_service_plan_id   = module.appserviceplan.id
+  create_resource_group = false
+  auth_settings_enabled = true
+
+  depends_on = [
+    module.appserviceplan
+  ]
 }
 ```
 
