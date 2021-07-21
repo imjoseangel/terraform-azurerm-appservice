@@ -150,7 +150,7 @@ resource "azurerm_app_service" "main" {
 
   lifecycle {
     ignore_changes = [
-      tags, identity
+      tags, identity, app_settings
     ]
   }
 
