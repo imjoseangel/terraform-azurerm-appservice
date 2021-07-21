@@ -52,3 +52,14 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "vnet_subnet_id" {
+  description = "(Required) The ID of the Subnet which the Private Endpoint should be connected to."
+  type        = string
+}
+
+variable "create_private_endpoint" {
+  description = "Whether to create private endpoint and use it for all networking resources"
+  type        = bool
+  default     = true
+}

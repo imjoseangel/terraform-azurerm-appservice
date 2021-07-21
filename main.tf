@@ -149,3 +149,18 @@ resource "azurerm_app_service" "main" {
   tags = merge({ "ResourceName" = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", ""))) }, var.tags, )
 
 }
+
+resource "azurerm_private_endpoint" "main" {
+  count               = var.create_private_endpoint ? 1 : 0
+  name                = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
+  location            = local.location
+  resource_group_name = local.resource_group_name
+  subnet_id           = var.vnet_subnet_id
+
+  private_service_connection {
+    name                           = "privateendpointconnection"
+    private_connection_resource_id = azurerm_app_service.main.id
+    subresource_names              = ["sites"]
+    is_manual_connection           = false
+  }
+}
