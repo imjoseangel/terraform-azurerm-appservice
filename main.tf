@@ -148,6 +148,12 @@ resource "azurerm_app_service" "main" {
 
   tags = merge({ "ResourceName" = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", ""))) }, var.tags, )
 
+  lifecycle {
+    ignore_changes = [
+      tags, identity
+    ]
+  }
+
 }
 
 resource "azurerm_private_endpoint" "main" {
@@ -162,5 +168,11 @@ resource "azurerm_private_endpoint" "main" {
     private_connection_resource_id = azurerm_app_service.main.id
     subresource_names              = ["sites"]
     is_manual_connection           = false
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
   }
 }
