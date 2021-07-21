@@ -61,5 +61,5 @@ variable "vnet_subnet_id" {
 variable "create_private_endpoint" {
   description = "Whether to create private endpoint and use it for all networking resources"
   type        = bool
-  default     = true
+  default     = false
 }
