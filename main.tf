@@ -153,7 +153,6 @@ resource "azurerm_app_service" "main" {
       tags, identity, app_settings
     ]
   }
-
 }
 
 resource "azurerm_private_endpoint" "main" {
