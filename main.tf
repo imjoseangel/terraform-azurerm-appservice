@@ -155,6 +155,34 @@ resource "azurerm_app_service" "main" {
   }
 }
 
+resource "random_id" "server" {
+  keepers = {
+    azi_id = 1
+  }
+
+  byte_length = 8
+}
+
+resource "azurerm_app_service_slot" "main" {
+  name                = random_id.server.hex
+  app_service_name    = azurerm_app_service.main.name
+  location            = local.location
+  resource_group_name = local.resource_group_name
+  app_service_plan_id = var.app_service_plan_id
+
+  site_config {
+    dotnet_framework_version = "v4.0"
+  }
+
+  app_settings = var.app_settings_slot
+
+  lifecycle {
+    ignore_changes = [
+      app_settings
+    ]
+  }
+}
+
 resource "azurerm_private_endpoint" "main" {
   count               = var.create_private_endpoint ? 1 : 0
   name                = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))

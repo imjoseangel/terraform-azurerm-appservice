@@ -53,6 +53,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "app_settings_slot" {
+  description = "Application settings for App Service."
+  type        = map(string)
+  default     = {}
+}
+
 variable "vnet_subnet_id" {
   description = "(Required) The ID of the Subnet which the Private Endpoint should be connected to."
   type        = string
