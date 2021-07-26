@@ -47,6 +47,12 @@ variable "years" {
   default     = 100
 }
 
+variable "https_only" {
+  description = "HTTPS restriction for App Service."
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
   description = "Tags to apply to all resources created."
   type        = map(string)
