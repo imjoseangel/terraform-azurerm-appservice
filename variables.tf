@@ -71,7 +71,7 @@ variable "vnet_subnet_id" {
   default     = null
 }
 
-variable "create_vnet_integration" {
+variable "vnet_integration" {
   description = "Whether to add vnet integration to the App"
   type        = bool
   default     = false
@@ -83,7 +83,7 @@ variable "vnet_pesubnet_id" {
   default     = null
 }
 
-variable "create_private_endpoint" {
+variable "private_endpoint" {
   description = "Whether to create private endpoint and use it for all networking resources"
   type        = bool
   default     = false
