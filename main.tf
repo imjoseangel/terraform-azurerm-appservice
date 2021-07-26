@@ -193,9 +193,14 @@ resource "azurerm_app_service_slot" "main" {
 
   lifecycle {
     ignore_changes = [
-      app_settings, tags
+      tags
     ]
   }
+}
+
+resource "azurerm_app_service_virtual_network_swift_connection" "main" {
+  app_service_id = azurerm_app_service.main.id
+  subnet_id      = var.vnet_subnet_id
 }
 
 resource "azurerm_private_endpoint" "main" {
