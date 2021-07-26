@@ -66,7 +66,12 @@ variable "app_settings" {
 }
 
 variable "vnet_subnet_id" {
-  description = "(Required) The ID of the Subnet which the Private Endpoint should be connected to."
+  description = "The ID of the Subnet which the App should be connected to."
+  type        = string
+}
+
+variable "vnet_pesubnet_id" {
+  description = "The ID of the Subnet which the Private Endpoint should be connected to."
   type        = string
 }
 

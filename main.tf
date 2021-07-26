@@ -208,7 +208,7 @@ resource "azurerm_private_endpoint" "main" {
   name                = lower(var.name)
   location            = local.location
   resource_group_name = local.resource_group_name
-  subnet_id           = var.vnet_subnet_id
+  subnet_id           = var.vnet_pesubnet_id
 
   private_service_connection {
     name                           = "privateendpointconnection"
