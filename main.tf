@@ -206,7 +206,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "main" {
 
 resource "azurerm_private_endpoint" "main" {
   count               = var.private_endpoint ? 1 : 0
-  name                = lower(var.name)
+  name                = format("%s-PE", lower(var.name))
   location            = local.location
   resource_group_name = local.resource_group_name
   subnet_id           = var.vnet_pesubnet_id
