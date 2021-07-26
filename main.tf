@@ -156,16 +156,8 @@ resource "azurerm_app_service" "main" {
   }
 }
 
-resource "random_id" "server" {
-  keepers = {
-    azi_id = 1
-  }
-
-  byte_length = 8
-}
-
 resource "azurerm_app_service_slot" "main" {
-  name                = random_id.server.hex
+  name                = format("%s-staging", lower(var.name))
   app_service_name    = azurerm_app_service.main.name
   location            = local.location
   resource_group_name = local.resource_group_name
