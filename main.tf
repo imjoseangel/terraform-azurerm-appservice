@@ -153,7 +153,7 @@ resource "azurerm_app_service" "main" {
 
   lifecycle {
     ignore_changes = [
-      tags, identity, app_settings
+      tags, identity.0.identity_ids, app_settings
     ]
   }
 }
@@ -193,7 +193,7 @@ resource "azurerm_app_service_slot" "main" {
 
   lifecycle {
     ignore_changes = [
-      app_settings
+      app_settings, tags
     ]
   }
 }
