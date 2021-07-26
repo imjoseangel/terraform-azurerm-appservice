@@ -53,7 +53,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "app_settings_slot" {
+variable "app_settings" {
   description = "Application settings for App Service."
   type        = map(string)
   default     = {}

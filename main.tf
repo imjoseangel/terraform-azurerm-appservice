@@ -99,6 +99,7 @@ resource "azurerm_app_service" "main" {
   location            = local.location
   resource_group_name = local.resource_group_name
   app_service_plan_id = var.app_service_plan_id
+  app_settings        = var.app_settings
 
   dynamic "site_config" {
     for_each = [merge(local.default_site_config, var.site_config)]
@@ -169,6 +170,7 @@ resource "azurerm_app_service_slot" "main" {
   location            = local.location
   resource_group_name = local.resource_group_name
   app_service_plan_id = var.app_service_plan_id
+  app_settings        = var.app_settings
 
   dynamic "site_config" {
     for_each = [merge(local.default_site_config, var.site_config)]
@@ -194,8 +196,6 @@ resource "azurerm_app_service_slot" "main" {
       websockets_enabled        = lookup(site_config.value, "websockets_enabled", null)
     }
   }
-
-  app_settings = var.app_settings_slot
 
   lifecycle {
     ignore_changes = [
