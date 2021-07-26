@@ -68,11 +68,19 @@ variable "app_settings" {
 variable "vnet_subnet_id" {
   description = "The ID of the Subnet which the App should be connected to."
   type        = string
+  default     = null
+}
+
+variable "create_vnet_integration" {
+  description = "Whether to add vnet integration to the App"
+  type        = bool
+  default     = false
 }
 
 variable "vnet_pesubnet_id" {
   description = "The ID of the Subnet which the Private Endpoint should be connected to."
   type        = string
+  default     = null
 }
 
 variable "create_private_endpoint" {
