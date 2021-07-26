@@ -53,8 +53,8 @@ resource "time_rotating" "main" {
 resource "azuread_application" "main" {
   count = var.auth_settings_enabled ? 1 : 0
 
-  display_name     = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
-  identifier_uris  = [format("api://%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))]
+  display_name     = lower(var.name)
+  identifier_uris  = [format("api://%s", lower(var.name))]
   sign_in_audience = "AzureADMyOrg"
 
   required_resource_access {
@@ -67,8 +67,8 @@ resource "azuread_application" "main" {
   }
 
   web {
-    homepage_url  = format("https://%s-%s.azurewebsites.net", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
-    redirect_uris = [format("https://%s-%s.azurewebsites.net/.auth/login/aad/callback", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))]
+    homepage_url  = format("https://%s.azurewebsites.net", lower(var.name))
+    redirect_uris = [format("https://%s.azurewebsites.net/.auth/login/aad/callback", lower(var.name))]
     implicit_grant {
       access_token_issuance_enabled = false
     }
@@ -85,7 +85,7 @@ resource "azuread_service_principal" "main" {
 resource "azuread_application_password" "main" {
   count = var.auth_settings_enabled ? 1 : 0
 
-  display_name          = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
+  display_name          = lower(var.name)
   application_object_id = azuread_application.main[0].object_id
   end_date              = time_rotating.main[0].rotation_rfc3339
 }
@@ -95,7 +95,7 @@ resource "azuread_application_password" "main" {
 #---------------------------------------------------------
 
 resource "azurerm_app_service" "main" {
-  name                = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
+  name                = lower(var.name)
   location            = local.location
   resource_group_name = local.resource_group_name
   app_service_plan_id = var.app_service_plan_id
@@ -147,7 +147,7 @@ resource "azurerm_app_service" "main" {
     type = "SystemAssigned"
   }
 
-  tags = merge({ "ResourceName" = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", ""))) }, var.tags, )
+  tags = merge({ "ResourceName" = lower(var.name) }, var.tags, )
 
   lifecycle {
     ignore_changes = [
@@ -206,7 +206,7 @@ resource "azurerm_app_service_slot" "main" {
 
 resource "azurerm_private_endpoint" "main" {
   count               = var.create_private_endpoint ? 1 : 0
-  name                = format("%s-%s", var.prefix, lower(replace(var.name, "/[[:^alnum:]]/", "")))
+  name                = lower(var.name)
   location            = local.location
   resource_group_name = local.resource_group_name
   subnet_id           = var.vnet_subnet_id
