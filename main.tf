@@ -165,7 +165,6 @@ resource "azurerm_app_service_slot" "staging" {
   resource_group_name = local.resource_group_name
   app_service_plan_id = var.app_service_plan_id
   app_settings        = var.app_settings
-  enabled             = var.slot_enabled
 
   dynamic "site_config" {
     for_each = [merge(local.default_site_config, var.site_config)]

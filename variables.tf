@@ -94,9 +94,3 @@ variable "private_endpoint" {
   type        = bool
   default     = false
 }
-
-variable "slot_enabled" {
-  description = "Whether the slot is enabled or not"
-  type        = bool
-  default     = true
-}
