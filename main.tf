@@ -18,7 +18,7 @@ locals {
     ]
   }
 
-  app_insights = try(data.azurerm_application_insights.app_insights.0, {})
+  app_insights = try(data.azurerm_application_insights.main.0, {})
 
   default_app_settings = var.application_insights_enabled ? {
     APPLICATION_INSIGHTS_IKEY             = try(local.app_insights.instrumentation_key, "")
