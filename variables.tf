@@ -101,8 +101,14 @@ variable "application_insights_enabled" {
   default     = true
 }
 
-variable "application_insights_id" {
-  description = "ID of the existing Application Insights to use."
+variable "application_insights_name" {
+  description = "Name of the existing Application Insights to use."
+  type        = string
+  default     = null
+}
+
+variable "application_insights_rsg" {
+  description = "Resource Group of the existing Application Insights to use."
   type        = string
   default     = null
 }
