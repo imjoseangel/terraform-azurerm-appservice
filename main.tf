@@ -4,6 +4,7 @@
 locals {
   resource_group_name = element(coalescelist(data.azurerm_resource_group.rgrp.*.name, azurerm_resource_group.rg.*.name, [""]), 0)
   location            = element(coalescelist(data.azurerm_resource_group.rgrp.*.location, azurerm_resource_group.rg.*.location, [""]), 0)
+
   default_site_config = {
     default_documents = [
       "Default.htm",
@@ -16,6 +17,12 @@ locals {
       "hostingstart.html",
     ]
   }
+
+  #   default_app_settings = var.application_insights_enabled ? {
+  #     APPLICATION_INSIGHTS_IKEY             = try(local.app_insights.instrumentation_key, "")
+  #     APPINSIGHTS_INSTRUMENTATIONKEY        = try(local.app_insights.instrumentation_key, "")
+  #     APPLICATIONINSIGHTS_CONNECTION_STRING = try(local.app_insights.connection_string, "")
+  #   } : {}
 }
 
 data "azurerm_client_config" "current" {}
@@ -99,7 +106,7 @@ resource "azurerm_app_service" "main" {
   location            = local.location
   resource_group_name = local.resource_group_name
   app_service_plan_id = var.app_service_plan_id
-  app_settings        = var.app_settings
+  app_settings        = merge(local.default_app_settings, var.app_settings)
 
   dynamic "site_config" {
     for_each = [merge(local.default_site_config, var.site_config)]
@@ -164,7 +171,7 @@ resource "azurerm_app_service_slot" "staging" {
   location            = local.location
   resource_group_name = local.resource_group_name
   app_service_plan_id = var.app_service_plan_id
-  app_settings        = var.app_settings
+  app_settings        = merge(local.default_app_settings, var.app_settings)
 
   dynamic "site_config" {
     for_each = [merge(local.default_site_config, var.site_config)]
@@ -230,4 +237,15 @@ resource "azurerm_private_endpoint" "main" {
       tags
     ]
   }
+}
+
+#---------------------------------------------------------
+# Application Insights Creation or selection
+#---------------------------------------------------------
+
+data "azurerm_application_insights" "main" {
+  count = var.application_insights_enabled && var.application_insights_id != null ? 1 : 0
+
+  name                = split("/", var.application_insights_id)[8]
+  resource_group_name = split("/", var.application_insights_id)[4]
 }

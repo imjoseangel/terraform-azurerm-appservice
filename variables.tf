@@ -90,7 +90,19 @@ variable "vnet_pesubnet_id" {
 }
 
 variable "private_endpoint" {
-  description = "Whether to create private endpoint and use it for all networking resources"
+  description = "Whether to create private endpoint and use it for all networking resources."
   type        = bool
   default     = false
+}
+
+variable "application_insights_enabled" {
+  description = "Use Application Insights for this App Service."
+  type        = bool
+  default     = true
+}
+
+variable "application_insights_id" {
+  description = "ID of the existing Application Insights to use."
+  type        = string
+  default     = null
 }
