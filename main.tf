@@ -204,6 +204,12 @@ resource "azurerm_app_service_virtual_network_swift_connection" "main" {
   subnet_id      = var.vnet_subnet_id
 }
 
+resource "azurerm_app_service_virtual_network_swift_connection" "slot" {
+  count          = var.slot_vnet_integration ? 1 : 0
+  app_service_id = azurerm_app_service_slot.main.id
+  subnet_id      = var.vnet_subnet_id
+}
+
 resource "azurerm_private_endpoint" "main" {
   count               = var.private_endpoint ? 1 : 0
   name                = format("%s-PE", lower(var.name))

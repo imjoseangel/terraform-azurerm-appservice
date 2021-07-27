@@ -77,6 +77,12 @@ variable "vnet_integration" {
   default     = false
 }
 
+variable "slot_vnet_integration" {
+  description = "Whether to add vnet integration to the App slot"
+  type        = bool
+  default     = false
+}
+
 variable "vnet_pesubnet_id" {
   description = "The ID of the Subnet which the Private Endpoint should be connected to."
   type        = string
