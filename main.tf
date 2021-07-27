@@ -206,7 +206,8 @@ resource "azurerm_app_service_virtual_network_swift_connection" "main" {
 
 resource "azurerm_app_service_slot_virtual_network_swift_connection" "slot" {
   count          = var.slot_vnet_integration ? 1 : 0
-  app_service_id = azurerm_app_service_slot.staging.name
+  slot_name      = azurerm_app_service_slot.staging.name
+  app_service_id = azurerm_app_service.main.id
   subnet_id      = var.vnet_subnet_id
 }
 
