@@ -112,3 +112,9 @@ variable "application_insights_rsg" {
   type        = string
   default     = null
 }
+
+variable "slot_name" {
+  description = "The name of the slot to create the App Service in."
+  type        = string
+  default     = format("%s-staging", lower(var.name))
+}

@@ -169,7 +169,7 @@ resource "azurerm_app_service" "main" {
 }
 
 resource "azurerm_app_service_slot" "staging" {
-  name                = format("%s-staging", lower(var.name))
+  name                = var.slot_name
   app_service_name    = azurerm_app_service.main.name
   location            = local.location
   resource_group_name = local.resource_group_name
