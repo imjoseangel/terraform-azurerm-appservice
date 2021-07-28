@@ -110,7 +110,6 @@ resource "azurerm_app_service" "main" {
   location            = local.location
   resource_group_name = local.resource_group_name
   app_service_plan_id = var.app_service_plan_id
-  app_settings        = merge(local.default_app_settings, var.app_settings)
 
   dynamic "site_config" {
     for_each = [merge(local.default_site_config, var.site_config)]
@@ -164,7 +163,7 @@ resource "azurerm_app_service" "main" {
 
   lifecycle {
     ignore_changes = [
-      tags, identity.0.identity_ids
+      tags, identity.0.identity_ids, app_settings
     ]
   }
 }
