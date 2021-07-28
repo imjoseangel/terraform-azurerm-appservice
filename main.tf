@@ -201,6 +201,8 @@ resource "azurerm_app_service_slot" "staging" {
     }
   }
 
+  tags = {}
+
   lifecycle {
     ignore_changes = [
       tags
@@ -234,6 +236,8 @@ resource "azurerm_private_endpoint" "main" {
     subresource_names              = ["sites"]
     is_manual_connection           = false
   }
+
+  tags = {}
 
   lifecycle {
     ignore_changes = [
