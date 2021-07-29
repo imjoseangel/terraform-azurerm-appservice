@@ -211,7 +211,7 @@ resource "azurerm_app_service_slot" "staging" {
 
   lifecycle {
     ignore_changes = [
-      tags
+      tags, identity.0.identity_ids, app_settings
     ]
   }
 }
