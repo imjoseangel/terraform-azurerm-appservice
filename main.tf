@@ -201,6 +201,12 @@ resource "azurerm_app_service_slot" "staging" {
     }
   }
 
+  https_only = var.https_only
+
+  identity {
+    type = "SystemAssigned"
+  }
+
   tags = {}
 
   lifecycle {
