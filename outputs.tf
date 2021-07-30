@@ -25,5 +25,5 @@ output "app_service_possible_outbound_ip_addresses" {
 
 output "azuread_service_principal" {
   description = "Azure Service Principal Object ID"
-  value       = azuread_service_principal.main.object_id
+  value       = azuread_service_principal.main[0].object_id
 }
