@@ -201,6 +201,23 @@ resource "azurerm_app_service_slot" "staging" {
     }
   }
 
+  dynamic "auth_settings" {
+    for_each = var.auth_settings_enabled ? ["auth_settings_enabled"] : []
+    content {
+      enabled                        = var.auth_settings_enabled
+      issuer                         = format("https://sts.windows.net/%s/v2.0", data.azurerm_client_config.current.tenant_id)
+      token_store_enabled            = false
+      unauthenticated_client_action  = "RedirectToLoginPage"
+      default_provider               = "AzureActiveDirectory"
+      allowed_external_redirect_urls = []
+
+      active_directory {
+        client_id         = azuread_application.main[0].application_id
+        allowed_audiences = [format("api://%s", azuread_application.main[0].application_id)]
+      }
+    }
+  }
+
   https_only = var.https_only
 
   identity {
