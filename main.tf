@@ -237,6 +237,11 @@ resource "azurerm_app_service_virtual_network_swift_connection" "main" {
   count          = var.vnet_integration ? 1 : 0
   app_service_id = azurerm_app_service.main.id
   subnet_id      = var.vnet_subnet_id
+  lifecycle {
+    ignore_changes = [
+      subnet_id
+    ]
+  }
 }
 
 resource "azurerm_app_service_slot_virtual_network_swift_connection" "slot" {
@@ -244,6 +249,11 @@ resource "azurerm_app_service_slot_virtual_network_swift_connection" "slot" {
   slot_name      = azurerm_app_service_slot.staging.name
   app_service_id = azurerm_app_service.main.id
   subnet_id      = var.vnet_subnet_id
+  lifecycle {
+    ignore_changes = [
+      subnet_id
+    ]
+  }
 }
 
 resource "azurerm_private_endpoint" "main" {
