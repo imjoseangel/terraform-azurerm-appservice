@@ -82,6 +82,7 @@ resource "azuread_application" "main" {
     redirect_uris = [format("https://%s.azurewebsites.net/.auth/login/aad/callback", lower(var.name))]
     implicit_grant {
       access_token_issuance_enabled = false
+      id_token_issuance_enabled     = true
     }
   }
 }
