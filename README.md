@@ -1,6 +1,6 @@
 # terraform-azurerm-appservice
 
-[![Terraform](https://github.com/visma-raet/terraform-azurerm-appservice/actions/workflows/terraform.yml/badge.svg)](https://github.com/visma-raet/terraform-azurerm-appservice/actions/workflows/terraform.yml)
+[![Terraform](https://github.com/imjoseangel/terraform-azurerm-appservice/actions/workflows/terraform.yml/badge.svg)](https://github.com/imjoseangel/terraform-azurerm-appservice/actions/workflows/terraform.yml)
 
 ## Deploys an Azure Application Service
 
@@ -14,7 +14,7 @@ This Terraform module deploys an Application Service on Azure
 
 ```terraform
 module "appserviceplan" {
-  source                = "github.com/visma-raet/terraform-azurerm-appserviceplan"
+  source                = "github.com/imjoseangel/terraform-azurerm-appserviceplan"
   name                  = var.appsp_name
   resource_group_name   = var.appsp_rsg
   location              = var.location
@@ -22,7 +22,7 @@ module "appserviceplan" {
 }
 
 module "appservice" {
-  source                = "github.com/visma-raet/terraform-azurerm-appservice"
+  source                = "github.com/imjoseangel/terraform-azurerm-appservice"
   name                  = var.appsvc_name
   resource_group_name   = var.appsvc_rsg
   location              = var.location
@@ -38,7 +38,7 @@ module "appservice" {
 
 ## Authors
 
-Originally created by [Visma-raet](http://github.com/visma-raet)
+Originally created by [imjoseangel](http://github.com/imjoseangel)
 
 ## License
 

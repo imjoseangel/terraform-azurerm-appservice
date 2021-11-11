@@ -29,11 +29,11 @@ jobs:
         body: |
           # Terraform Module - Azurerm App Service
 
-          [![Terraform](https://github.com/visma-raet/terraform-azurerm-appservice/actions/workflows/terraform.yml/badge.svg)](https://github.com/visma-raet/terraform-azurerm-appservice/actions/workflows/terraform.yml)
+          [![Terraform](https://github.com/imjoseangel/terraform-azurerm-appservice/actions/workflows/terraform.yml/badge.svg)](https://github.com/imjoseangel/terraform-azurerm-appservice/actions/workflows/terraform.yml)
 
           A [Terraform][2] module to deploys a App Service.
 
-          By [visma-raet][3]
+          By [imjoseangel][3]
 
           Use with:
           ```bash
@@ -50,7 +50,7 @@ jobs:
 
           Licensed under [the MIT License][1].
 
-          [1]: https://github.com/visma-raet/terraform-azurerm-appservice/blob/devel/LICENSE
+          [1]: https://github.com/imjoseangel/terraform-azurerm-appservice/blob/devel/LICENSE
           [2]: https://www.terraform.io/
           [3]: https://www.vismaraet.nl/
         draft: false
