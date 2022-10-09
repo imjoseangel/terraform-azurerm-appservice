@@ -18,7 +18,7 @@ locals {
     ]
   }
 
-  app_insights = try(data.azurerm_application_insights.main.0, {})
+  app_insights = try(data.azurerm_application_insights.main[0], {})
 
   default_app_settings = var.application_insights_enabled ? {
     APPINSIGHTS_INSTRUMENTATIONKEY             = try(local.app_insights.instrumentation_key, "")
@@ -164,7 +164,7 @@ resource "azurerm_app_service" "main" {
 
   lifecycle {
     ignore_changes = [
-      tags, identity.0.identity_ids, app_settings
+      tags, identity[0].identity_ids, app_settings
     ]
   }
 }
@@ -229,7 +229,7 @@ resource "azurerm_app_service_slot" "staging" {
 
   lifecycle {
     ignore_changes = [
-      tags, identity.0.identity_ids, app_settings
+      tags, identity[0].identity_ids, app_settings
     ]
   }
 }
