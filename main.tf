@@ -106,6 +106,62 @@ resource "azuread_application_password" "main" {
 # App Service Creation or selection
 #---------------------------------------------------------
 
+resource "azurerm_linux_web_app" "main" {
+  name                = lower(var.name)
+  location            = local.location
+  resource_group_name = local.resource_group_name
+  service_plan_id     = var.app_service_plan_id
+
+  dynamic "site_config" {
+    for_each = [merge(local.default_site_config, var.site_config)]
+
+    content {
+      always_on                = lookup(site_config.value, "always_on", null)
+      app_command_line         = lookup(site_config.value, "app_command_line", null)
+      default_documents        = lookup(site_config.value, "default_documents", null)
+      ftps_state               = lookup(site_config.value, "ftps_state", null)
+      health_check_path        = lookup(site_config.value, "health_check_path", null)
+      http2_enabled            = lookup(site_config.value, "http2_enabled", null)
+      linux_fx_version         = lookup(site_config.value, "linux_fx_version", null)
+      managed_pipeline_mode    = lookup(site_config.value, "managed_pipeline_mode", null)
+      remote_debugging_enabled = lookup(site_config.value, "remote_debugging_enabled", null)
+      remote_debugging_version = lookup(site_config.value, "remote_debugging_version", null)
+      scm_type                 = lookup(site_config.value, "scm_type", null)
+      websockets_enabled       = lookup(site_config.value, "websockets_enabled", null)
+    }
+  }
+
+  dynamic "auth_settings" {
+    for_each = var.auth_settings_enabled ? ["auth_settings_enabled"] : []
+    content {
+      enabled                        = var.auth_settings_enabled
+      issuer                         = format("https://sts.windows.net/%s/v2.0", data.azurerm_client_config.current.tenant_id)
+      token_store_enabled            = false
+      unauthenticated_client_action  = "RedirectToLoginPage"
+      default_provider               = "AzureActiveDirectory"
+      allowed_external_redirect_urls = []
+
+      active_directory {
+        client_id         = azuread_application.main[0].application_id
+        allowed_audiences = [format("api://%s", azuread_application.main[0].application_id)]
+      }
+    }
+  }
+  https_only = var.https_only
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = merge({ "ResourceName" = lower(var.name) }, var.tags, )
+
+  lifecycle {
+    ignore_changes = [
+      tags, identity[0].identity_ids, app_settings
+    ]
+  }
+}
+
 resource "azurerm_app_service" "main" {
   name                = lower(var.name)
   location            = local.location
