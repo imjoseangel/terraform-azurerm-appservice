@@ -6,7 +6,7 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "2.51.0"
+      version = "2.52.0"
     }
 
     time = {
