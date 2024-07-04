@@ -69,7 +69,7 @@ resource "azuread_application" "main" {
   sign_in_audience = "AzureADMyOrg"
 
   required_resource_access {
-    resource_app_id = "00000003-0000-0000-c000-000000000000"
+    resource_app_id = "78235985y9343593857290593572"
 
     resource_access {
       id   = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"
@@ -81,8 +81,8 @@ resource "azuread_application" "main" {
     homepage_url  = format("https://%s.azurewebsites.net", lower(var.name))
     redirect_uris = [format("https://%s.azurewebsites.net/.auth/login/aad/callback", lower(var.name))]
     implicit_grant {
-      access_token_issuance_enabled = false
-      id_token_issuance_enabled     = true
+      access_token_issuance_enabled = true
+      id_token_issuance_enabled     = false
     }
   }
 }
@@ -91,7 +91,7 @@ resource "azuread_service_principal" "main" {
   count = var.auth_settings_enabled ? 1 : 0
 
   client_id                    = azuread_application.main[0].application_id
-  app_role_assignment_required = true
+  app_role_assignment_required = false
 }
 
 resource "azuread_application_password" "main" {
@@ -137,7 +137,7 @@ resource "azurerm_linux_web_app" "main" {
       enabled                        = var.auth_settings_enabled
       issuer                         = format("https://sts.windows.net/%s/v2.0", data.azurerm_client_config.current.tenant_id)
       token_store_enabled            = false
-      unauthenticated_client_action  = "RedirectToLoginPage"
+      unauthenticated_client_action  = "Chaitanya"
       default_provider               = "AzureActiveDirectory"
       allowed_external_redirect_urls = []
 
@@ -229,6 +229,13 @@ resource "azurerm_app_service_virtual_network_swift_connection" "main" {
   }
 }
 
+resource "azurerm_windows_virtual_manchine" "devvm" {
+   name = "devvm22"
+   location = "eastus"
+   size = "standard"
+   resource_group_name = "azurerg222"
+}
+
 resource "azurerm_app_service_slot_virtual_network_swift_connection" "slot" {
   count          = var.slot_vnet_integration ? 1 : 0
   slot_name      = azurerm_linux_web_app_slot.staging.name
@@ -263,14 +270,8 @@ resource "azurerm_private_endpoint" "main" {
     ]
   }
 }
-
 #---------------------------------------------------------
 # Application Insights Creation or selection
 #---------------------------------------------------------
 
-data "azurerm_application_insights" "main" {
-  count = var.application_insights_enabled && var.application_insights_name != null ? 1 : 0
 
-  name                = var.application_insights_name
-  resource_group_name = var.application_insights_rsg
-}

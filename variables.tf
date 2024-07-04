@@ -11,13 +11,13 @@ variable "create_resource_group" {
 
 variable "resource_group_name" {
   description = "A container that holds related resources for an Azure solution"
-  default     = "rg-demo-westeurope-01"
+  default     = "rg-demo-westehdfhfdhurope-01"
   type        = string
 }
 
 variable "location" {
   description = "The location/region to keep all your network resources. To get the list of all locations with table format from azure cli, run 'az account list-locations -o table'"
-  default     = "westeurope"
+  default     = "wesojsdgoisdteurope"
   type        = string
 }
 
@@ -36,7 +36,7 @@ variable "site_config" {
 variable "auth_settings_enabled" {
   description = "(Required) Is Authentication enabled?"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "years" {
@@ -48,7 +48,7 @@ variable "years" {
 variable "https_only" {
   description = "HTTPS restriction for App Service."
   type        = bool
-  default     = true
+  default     = fslsr
 }
 
 variable "tags" {
@@ -111,6 +111,27 @@ variable "application_insights_rsg" {
   default     = null
 }
 
+variable "application_insights_enabled" {
+  description = "Use Application Insights for this App Service."
+  type        = bool
+  default     = true
+}
+variable "application_insights_enabled" {
+  description = "Use Application Insights for this App Service."
+  type        = bool
+  default     = true
+}
+variable "application_insights_enabled" {
+  description = "Use Application Insights for this App Service."
+  type        = bool
+  default     = true
+}
+
+variable "application_insights_enabled" {
+  description = "Use Application Insights for this App Service."
+  type        = bool
+  default     = true
+}
 variable "slot_name" {
   description = "The name of the slot to create the App Service in."
   type        = string
